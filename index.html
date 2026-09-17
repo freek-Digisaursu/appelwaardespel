@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App√®lwaardespel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,600&display=swap">
+<style>
+  :root{
+    --bg: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-2: #F7F7F7;
+    --ink: #000000;
+    --ink-soft: #55555A;
+    --ink-faint: #8A8A8E;
+    --rule: #DEDEDE;
+    --rule-strong: #B8B8B8;
+
+    /* steunkleur: Mens en Samenleving (huisstijl Arteveldehogeschool) */
+    --accent: #D20082;
+    --accent-ink: #FFFFFF;
+    --accent-tint: #FBE4F1;
+    --accent-tint-strong: #F3B8DA;
+
+    --good: #5AB946;
+    --good-bg: #E7F5E2;
+    --bad: #ED0034;
+    --bad-bg: #FCE0E6;
+
+    --shadow: 0 1px 2px rgba(0,0,0,0.06), 0 6px 16px -10px rgba(0,0,0,0.18);
+    --radius: 10px;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #121212;
+      --surface: #1A1A1A;
+      --surface-2: #212121;
+      --ink: #F5F5F5;
+      --ink-soft: #B7B7B7;
+      --ink-faint: #8C8C8C;
+      --rule: #333333;
+      --rule-strong: #454545;
+
+      --accent: #F050B0;
+      --accent-ink: #1A0512;
+      --accent-tint: #33162A;
+      --accent-tint-strong: #4A1E3B;
+
+      --good: #7ED26A;
+      --good-bg: #1E3319;
+      --bad: #F0637E;
+      --bad-bg: #3A1A20;
+
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 24px -10px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #121212;
+    --surface: #1A1A1A;
+    --surface-2: #212121;
+    --ink: #F5F5F5;
+    --ink-soft: #B7B7B7;
+    --ink-faint: #8C8C8C;
+    --rule: #333333;
+    --rule-strong: #454545;
+
+    --accent: #F050B0;
+    --accent-ink: #1A0512;
+    --accent-tint: #33162A;
+    --accent-tint-strong: #4A1E3B;
+
+    --good: #7ED26A;
+    --good-bg: #1E3319;
+    --bad: #F0637E;
+    --bad-bg: #3A1A20;
+
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 24px -10px rgba(0,0,0,0.6);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ color-scheme: light dark; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding: 0 20px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap{ max-width: 960px; margin: 0 auto; }
+
+  /* ---------- header ---------- */
+  header.top{
+    padding: 40px 0 26px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 28px;
+  }
+  .brandrow{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .wordmark{
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .wordmark span{ color: var(--accent); }
+  .eyebrow{
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+  h1{
+    font-family: "Source Serif Pro", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.08;
+    margin: 14px 0 12px;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+  .lede{
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  .statbar{
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .progress-track{
+    flex: 1 1 220px;
+    height: 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: 99px;
+    overflow: hidden;
+    min-width: 140px;
+  }
+  .progress-fill{
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width .35s ease;
+  }
+  .progress-label{
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .progress-label b{ color: var(--ink); font-weight: 700; }
+  button.reset{
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--accent-ink);
+    background: var(--accent);
+    border: 1.5px solid var(--accent);
+    border-radius: 99px;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition: opacity .15s ease;
+  }
+  button.reset:hover{ opacity: .85; }
+  button.reset:focus-visible, .card:focus-visible, .zone:focus-visible, summary:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ---------- pool ---------- */
+  section.pool-section{ margin-bottom: 34px; }
+  .section-label{
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 12px;
+  }
+  #pool{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 52px;
+    list-style: none;
+    margin: 0;
+    padding: 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+  #pool:empty::after{
+    content: "Alle activiteiten zijn geplaatst ‚Äî mooi werk.";
+    font-size: 14px;
+    color: var(--ink-faint);
+    font-style: italic;
+    padding: 6px 2px;
+  }
+
+  .card{
+    touch-action: none;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    line-height: 1.3;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1.5px solid var(--rule-strong);
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    box-shadow: var(--shadow);
+    max-width: 100%;
+  }
+  .card.selected{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-tint-strong);
+  }
+  .card.dragging{
+    position: fixed;
+    z-index: 50;
+    cursor: grabbing;
+    pointer-events: none;
+    box-shadow: 0 12px 28px -8px rgba(0,0,0,0.35);
+  }
+  .card.is-correct{
+    cursor: default;
+    background: var(--good-bg);
+    border-color: var(--good);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card.is-correct::after{
+    content: "‚úì";
+    color: var(--good);
+    font-weight: 700;
+  }
+  .card.is-wrong{ animation: shake .4s ease; border-color: var(--bad); background: var(--bad-bg); }
+  @keyframes shake{
+    0%,100%{ transform: translateX(0); }
+    20%{ transform: translateX(-6px); }
+    40%{ transform: translateX(5px); }
+    60%{ transform: translateX(-4px); }
+    80%{ transform: translateX(3px); }
+  }
+
+  /* ---------- zones ---------- */
+  .zones{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 760px){
+    .zones{ grid-template-columns: 1fr; }
+  }
+  .zone{
+    border-radius: var(--radius);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+  }
+  .zone.hot{ outline: 2px dashed var(--accent); outline-offset: 3px; }
+
+  .zone-head{ margin-bottom: 4px; }
+  .zone-title{
+    font-family: "Source Serif Pro", Georgia, serif;
+    font-weight: 600;
+    font-size: 19px;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .zone-def{
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .zone-drop{
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .zone-drop .card{ width: 100%; }
+  .zone-hint{
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: auto;
+    padding-top: 10px;
+  }
+
+  #status{
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .banner{
+    display: none;
+    align-items: center;
+    gap: 12px;
+    background: var(--good-bg);
+    border: 1.5px solid var(--good);
+    color: var(--ink);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 28px;
+    font-size: 15px;
+  }
+  .banner.show{ display: flex; }
+  .banner b{ font-family: "Source Serif Pro", serif; font-size: 17px; color: var(--good); }
+
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brandrow">
+      <p class="wordmark">Artevelde<span>hogeschool</span></p>
+      <p class="eyebrow">Leerpad Muzisch Werken</p>
+    </div>
+    <h1>Bij welk app√®l hoort deze activiteit?</h1>
+    <p class="lede">Sleep elke activiteit naar de app√®lwaarde die het beste past: sensopathisch, dimensionaal of thematisch.</p>
+    <div class="statbar">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="progress-label"><b id="progressCount">0</b> / 15 juist geplaatst</p>
+      <button class="reset" id="resetBtn" type="button">Opnieuw schudden</button>
+    </div>
+  </header>
+
+  <div class="banner" id="banner">
+    <span>üéâ</span>
+    <span><b>Voor elkaar.</b> Alle vijftien activiteiten staan bij de juiste app√®lwaarde.</span>
+  </div>
+
+  <section class="pool-section">
+    <p class="section-label">Activiteiten</p>
+    <ul id="pool" role="list" aria-label="Nog te plaatsen activiteiten"></ul>
+  </section>
+
+  <section class="zones" aria-label="App√®lwaarden">
+    <div class="zone" data-cat="sensopathisch" tabindex="0" role="group" aria-label="Sensopathisch app√®l, sleepdoel">
+      <div class="zone-head">
+        <h2 class="zone-title">Sensopathisch app√®l</h2>
+        <p class="zone-def">De uitnodiging tot beleving in directe zintuiglijke of lichamelijke omgang met het materiaal.</p>
+      </div>
+      <ul class="zone-drop" id="drop-sensopathisch" role="list" aria-label="Geplaatst bij sensopathisch app√®l"></ul>
+      <p class="zone-hint">Sleep hierheen, of selecteer een activiteit en tik dit vak aan.</p>
+    </div>
+
+    <div class="zone" data-cat="dimensionaal" tabindex="0" role="group" aria-label="Dimensionaal app√®l, sleepdoel">
+      <div class="zone-head">
+        <h2 class="zone-title">Dimensionaal app√®l</h2>
+        <p class="zone-def">De uitnodiging om te bewegen in de ruimte, met voorwerpen of met het lichaam. Het resultaat doet er niet toe.</p>
+      </div>
+      <ul class="zone-drop" id="drop-dimensionaal" role="list" aria-label="Geplaatst bij dimensionaal app√®l"></ul>
+      <p class="zone-hint">Sleep hierheen, of selecteer een activiteit en tik dit vak aan.</p>
+    </div>
+
+    <div class="zone" data-cat="thematisch" tabindex="0" role="group" aria-label="Thematisch app√®l, sleepdoel">
+      <div class="zone-head">
+        <h2 class="zone-title">Thematisch app√®l</h2>
+        <p class="zone-def">De uitnodiging die uitgaat van de symbolische betekenis van een activiteit, gekleurd door persoonlijke en collectieve associaties.</p>
+      </div>
+      <ul class="zone-drop" id="drop-thematisch" role="list" aria-label="Geplaatst bij thematisch app√®l"></ul>
+      <p class="zone-hint">Sleep hierheen, of selecteer een activiteit en tik dit vak aan.</p>
+    </div>
+  </section>
+
+  <p id="status" role="status" aria-live="polite"></p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CARDS = [
+    { id: "sc1", label: "Scheerschuim uitsmeren", cat: "sensopathisch" },
+    { id: "sc2", label: "Blote voeten door het zand lopen", cat: "sensopathisch" },
+    { id: "sc3", label: "Vingerverven met klodders verf", cat: "sensopathisch" },
+    { id: "sc4", label: "Deeg kneden in de keuken", cat: "sensopathisch" },
+    { id: "sc5", label: "Luisteren naar regen tegen het raam", cat: "sensopathisch" },
+
+    { id: "di1", label: "Trampoline springen", cat: "dimensionaal" },
+    { id: "di2", label: "Fietsen door het bos", cat: "dimensionaal" },
+    { id: "di3", label: "Ballen gooien naar een mandje", cat: "dimensionaal" },
+    { id: "di4", label: "Hinkelen op het schoolplein", cat: "dimensionaal" },
+    { id: "di5", label: "Dansen op muziek", cat: "dimensionaal" },
+
+    { id: "th1", label: "Een oude foto van een familielid bekijken", cat: "thematisch" },
+    { id: "th2", label: "Een verjaardagskaart maken voor opa", cat: "thematisch" },
+    { id: "th3", label: "De kerstboom optuigen", cat: "thematisch" },
+    { id: "th4", label: "Boodschappen doen in een speelwinkeltje", cat: "thematisch" },
+    { id: "th5", label: "Een brief schrijven aan een dierbare", cat: "thematisch" }
+  ];
+
+  var pool = document.getElementById("pool");
+  var zones = Array.prototype.slice.call(document.querySelectorAll(".zone"));
+  var status = document.getElementById("status");
+  var progressFill = document.getElementById("progressFill");
+  var progressCount = document.getElementById("progressCount");
+  var banner = document.getElementById("banner");
+  var resetBtn = document.getElementById("resetBtn");
+
+  var selectedCard = null;
+  var correctTotal = 0;
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function say(msg){
+    status.textContent = "";
+    window.setTimeout(function(){ status.textContent = msg; }, 30);
+  }
+
+  function updateProgress(){
+    progressCount.textContent = String(correctTotal);
+    progressFill.style.width = (correctTotal / CARDS.length * 100) + "%";
+    if (correctTotal === CARDS.length){
+      banner.classList.add("show");
+    } else {
+      banner.classList.remove("show");
+    }
+  }
+
+  function selectCard(card){
+    if (selectedCard) selectedCard.classList.remove("selected");
+    if (selectedCard === card){ selectedCard = null; return; }
+    selectedCard = card;
+    card.classList.add("selected");
+    card.setAttribute("aria-pressed", "true");
+  }
+
+  function clearSelection(){
+    if (selectedCard){
+      selectedCard.classList.remove("selected");
+      selectedCard.setAttribute("aria-pressed", "false");
+    }
+    selectedCard = null;
+  }
+
+  function placeCard(card, targetCat){
+    var actualCat = card.dataset.cat;
+
+    if (targetCat === null){
+      pool.appendChild(card);
+      clearSelection();
+      return;
+    }
+
+    if (targetCat === actualCat){
+      document.getElementById("drop-" + targetCat).appendChild(card);
+      card.classList.add("is-correct");
+      card.setAttribute("aria-disabled", "true");
+      card.style.cursor = "default";
+      correctTotal++;
+      updateProgress();
+      var zoneTitle = document.querySelector('.zone[data-cat="' + targetCat + '"] .zone-title').textContent;
+      say("Goed! \"" + card.dataset.label + "\" hoort bij " + zoneTitle + ". Nog " + (CARDS.length - correctTotal) + " te plaatsen.");
+      clearSelection();
+    } else {
+      var zoneEl = document.getElementById("drop-" + targetCat);
+      zoneEl.appendChild(card);
+      card.classList.add("is-wrong");
+      say("Nog niet juist. Probeer een andere app√®lwaarde voor \"" + card.dataset.label + "\".");
+      window.setTimeout(function(){
+        card.classList.remove("is-wrong");
+        pool.appendChild(card);
+      }, 420);
+      clearSelection();
+    }
+  }
+
+  function makeCard(def){
+    var card = document.createElement("li");
+    card.setAttribute("role", "listitem");
+    card.style.listStyle = "none";
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "card";
+    btn.textContent = def.label;
+    btn.dataset.id = def.id;
+    btn.dataset.cat = def.cat;
+    btn.dataset.label = def.label;
+    btn.setAttribute("aria-pressed", "false");
+
+    card.appendChild(btn);
+    return card;
+  }
+
+  // click / keyboard placement -------------------------------------------
+  function onCardActivate(e){
+    var card = e.target.closest(".card");
+    if (!card || card.classList.contains("is-correct")) return;
+    if (card._suppressClick){ card._suppressClick = false; return; }
+    selectCard(card);
+  }
+
+  function onZoneActivate(e){
+    if (!selectedCard) return;
+    var zone = e.currentTarget;
+    placeCard(selectedCard, zone.dataset.cat);
+  }
+
+  document.addEventListener("click", function(e){
+    if (e.target.closest(".card")) { onCardActivate(e); return; }
+    if (e.target.id === "pool" || e.target.closest("#pool") === pool && e.target === pool){
+      if (selectedCard) placeCard(selectedCard, null);
+    }
+  });
+
+  zones.forEach(function(zone){
+    zone.addEventListener("click", function(e){
+      if (e.target.closest(".card")) return;
+      onZoneActivate(e);
+    });
+    zone.addEventListener("keydown", function(e){
+      if ((e.key === "Enter" || e.key === " ") && selectedCard){
+        e.preventDefault();
+        placeCard(selectedCard, zone.dataset.cat);
+      }
+    });
+  });
+
+  // pointer-based dragging --------------------------------------------
+  var dragState = null;
+
+  function onPointerDown(e){
+    var card = e.target.closest(".card");
+    if (!card || card.classList.contains("is-correct")) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+
+    var rect = card.getBoundingClientRect();
+    dragState = {
+      card: card,
+      offsetX: e.clientX - rect.left,
+      offsetY: e.clientY - rect.top,
+      width: rect.width,
+      startX: e.clientX,
+      startY: e.clientY,
+      moved: false,
+      placeholder: null
+    };
+  }
+
+  function onPointerMove(e){
+    if (!dragState) return;
+    var dx = e.clientX - dragState.startX;
+    var dy = e.clientY - dragState.startY;
+
+    if (!dragState.moved){
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      dragState.moved = true;
+      var card = dragState.card;
+      card._suppressClick = true;
+
+      var placeholder = document.createElement("li");
+      placeholder.style.listStyle = "none";
+      placeholder.style.width = card.getBoundingClientRect().width + "px";
+      placeholder.style.height = card.getBoundingClientRect().height + "px";
+      placeholder.style.visibility = "hidden";
+      card.parentNode.insertBefore(placeholder, card);
+      dragState.placeholder = placeholder;
+
+      card.style.width = dragState.width + "px";
+      document.body.appendChild(card);
+      card.classList.add("dragging");
+      clearSelection();
+    }
+
+    var card = dragState.card;
+    card.style.left = (e.clientX - dragState.offsetX) + "px";
+    card.style.top = (e.clientY - dragState.offsetY) + "px";
+
+    zones.forEach(function(z){ z.classList.remove("hot"); });
+    var under = document.elementFromPoint(e.clientX, e.clientY);
+    var zoneUnder = under ? under.closest(".zone") : null;
+    if (zoneUnder) zoneUnder.classList.add("hot");
+  }
+
+  function onPointerUp(e){
+    if (!dragState) return;
+    var card = dragState.card;
+
+    if (!dragState.moved){
+      dragState = null;
+      return;
+    }
+
+    card.classList.remove("dragging");
+    card.style.position = "";
+    card.style.left = "";
+    card.style.top = "";
+    card.style.width = "";
+
+    zones.forEach(function(z){ z.classList.remove("hot"); });
+    var under = document.elementFromPoint(e.clientX, e.clientY);
+    var zoneUnder = under ? under.closest(".zone") : null;
+
+    if (dragState.placeholder && dragState.placeholder.parentNode){
+      dragState.placeholder.parentNode.removeChild(dragState.placeholder);
+    }
+
+    if (zoneUnder){
+      placeCard(card, zoneUnder.dataset.cat);
+    } else {
+      placeCard(card, null);
+    }
+
+    dragState = null;
+  }
+
+  document.addEventListener("pointerdown", onPointerDown);
+  document.addEventListener("pointermove", onPointerMove);
+  document.addEventListener("pointerup", onPointerUp);
+  document.addEventListener("pointercancel", onPointerUp);
+
+  // reset ------------------------------------------------------------
+  function build(){
+    pool.innerHTML = "";
+    zones.forEach(function(z){ document.getElementById("drop-" + z.dataset.cat).innerHTML = ""; });
+    correctTotal = 0;
+    updateProgress();
+    banner.classList.remove("show");
+    shuffle(CARDS).forEach(function(def){ pool.appendChild(makeCard(def)); });
+    say("Nieuwe ronde. Vijftien activiteiten klaar om te slepen.");
+  }
+
+  resetBtn.addEventListener("click", build);
+
+  build();
+})();
+</script>
+
+</body>
+</html>
