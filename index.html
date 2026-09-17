@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>App√®lwaardespel</title>
+<title>App&egrave;lwaardespel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,600&display=swap">
@@ -213,7 +213,7 @@
     border-radius: var(--radius);
   }
   #pool:empty::after{
-    content: "Alle activiteiten zijn geplaatst ‚Äî mooi werk.";
+    content: "Alle activiteiten zijn geplaatst \2014 mooi werk.";
     font-size: 14px;
     color: var(--ink-faint);
     font-style: italic;
@@ -258,7 +258,7 @@
     gap: 8px;
   }
   .card.is-correct::after{
-    content: "‚úì";
+    content: "\2713";
     color: var(--good);
     font-weight: 700;
   }
@@ -356,8 +356,8 @@
       <p class="wordmark">Artevelde<span>hogeschool</span></p>
       <p class="eyebrow">Leerpad Muzisch Werken</p>
     </div>
-    <h1>Bij welk app√®l hoort deze activiteit?</h1>
-    <p class="lede">Sleep elke activiteit naar de app√®lwaarde die het beste past: sensopathisch, dimensionaal of thematisch.</p>
+    <h1>Bij welk app&egrave;l hoort deze activiteit?</h1>
+    <p class="lede">Sleep elke activiteit naar de app&egrave;lwaarde die het beste past: sensopathisch, dimensionaal of thematisch.</p>
     <div class="statbar">
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
       <p class="progress-label"><b id="progressCount">0</b> / 15 juist geplaatst</p>
@@ -366,8 +366,8 @@
   </header>
 
   <div class="banner" id="banner">
-    <span>üéâ</span>
-    <span><b>Voor elkaar.</b> Alle vijftien activiteiten staan bij de juiste app√®lwaarde.</span>
+    <span>&#127881;</span>
+    <span><b>Voor elkaar.</b> Alle vijftien activiteiten staan bij de juiste app&egrave;lwaarde.</span>
   </div>
 
   <section class="pool-section">
@@ -375,31 +375,31 @@
     <ul id="pool" role="list" aria-label="Nog te plaatsen activiteiten"></ul>
   </section>
 
-  <section class="zones" aria-label="App√®lwaarden">
-    <div class="zone" data-cat="sensopathisch" tabindex="0" role="group" aria-label="Sensopathisch app√®l, sleepdoel">
+  <section class="zones" aria-label="App&egrave;lwaarden">
+    <div class="zone" data-cat="sensopathisch" tabindex="0" role="group" aria-label="Sensopathisch app&egrave;l, sleepdoel">
       <div class="zone-head">
-        <h2 class="zone-title">Sensopathisch app√®l</h2>
+        <h2 class="zone-title">Sensopathisch app&egrave;l</h2>
         <p class="zone-def">De uitnodiging tot beleving in directe zintuiglijke of lichamelijke omgang met het materiaal.</p>
       </div>
-      <ul class="zone-drop" id="drop-sensopathisch" role="list" aria-label="Geplaatst bij sensopathisch app√®l"></ul>
+      <ul class="zone-drop" id="drop-sensopathisch" role="list" aria-label="Geplaatst bij sensopathisch app&egrave;l"></ul>
       <p class="zone-hint">Sleep hierheen, of selecteer een activiteit en tik dit vak aan.</p>
     </div>
 
-    <div class="zone" data-cat="dimensionaal" tabindex="0" role="group" aria-label="Dimensionaal app√®l, sleepdoel">
+    <div class="zone" data-cat="dimensionaal" tabindex="0" role="group" aria-label="Dimensionaal app&egrave;l, sleepdoel">
       <div class="zone-head">
-        <h2 class="zone-title">Dimensionaal app√®l</h2>
+        <h2 class="zone-title">Dimensionaal app&egrave;l</h2>
         <p class="zone-def">De uitnodiging om te bewegen in de ruimte, met voorwerpen of met het lichaam. Het resultaat doet er niet toe.</p>
       </div>
-      <ul class="zone-drop" id="drop-dimensionaal" role="list" aria-label="Geplaatst bij dimensionaal app√®l"></ul>
+      <ul class="zone-drop" id="drop-dimensionaal" role="list" aria-label="Geplaatst bij dimensionaal app&egrave;l"></ul>
       <p class="zone-hint">Sleep hierheen, of selecteer een activiteit en tik dit vak aan.</p>
     </div>
 
-    <div class="zone" data-cat="thematisch" tabindex="0" role="group" aria-label="Thematisch app√®l, sleepdoel">
+    <div class="zone" data-cat="thematisch" tabindex="0" role="group" aria-label="Thematisch app&egrave;l, sleepdoel">
       <div class="zone-head">
-        <h2 class="zone-title">Thematisch app√®l</h2>
+        <h2 class="zone-title">Thematisch app&egrave;l</h2>
         <p class="zone-def">De uitnodiging die uitgaat van de symbolische betekenis van een activiteit, gekleurd door persoonlijke en collectieve associaties.</p>
       </div>
-      <ul class="zone-drop" id="drop-thematisch" role="list" aria-label="Geplaatst bij thematisch app√®l"></ul>
+      <ul class="zone-drop" id="drop-thematisch" role="list" aria-label="Geplaatst bij thematisch app&egrave;l"></ul>
       <p class="zone-hint">Sleep hierheen, of selecteer een activiteit en tik dit vak aan.</p>
     </div>
   </section>
@@ -505,7 +505,7 @@
       var zoneEl = document.getElementById("drop-" + targetCat);
       zoneEl.appendChild(card);
       card.classList.add("is-wrong");
-      say("Nog niet juist. Probeer een andere app√®lwaarde voor \"" + card.dataset.label + "\".");
+      say("Nog niet juist. Probeer een andere app\u00E8lwaarde voor \"" + card.dataset.label + "\".");
       window.setTimeout(function(){
         card.classList.remove("is-wrong");
         pool.appendChild(card);
